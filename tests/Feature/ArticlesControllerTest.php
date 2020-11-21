@@ -51,11 +51,14 @@ class ArticlesControllerTest extends TestCase
             ->assertSee($article->title)
             ->assertSee($article->content);
 
-        $this->assertDatabaseHas('articles', [
-            'user_id' => $user->id,
-            'title' => $article->title,
-            'content' => $article->content
-        ]);
+        $this->assertDatabaseHas(
+            'articles',
+            [
+                'user_id' => $user->id,
+                'title' => $article->title,
+                'content' => $article->content
+            ]
+        );
     }
 
     public function testStoreNewArticle(): void
@@ -181,7 +184,9 @@ class ArticlesControllerTest extends TestCase
                 'user_id' => $user->id
             ]
         );
+
         $this->followingRedirects();
+
         $response = $this->patch(route(
             'articles.update',
             [
