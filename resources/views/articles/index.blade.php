@@ -18,7 +18,9 @@
             @foreach($articles as $article)
             <tr>
                 <th scope="row">{{ $article->id }}</th>
-                <td><a href="{{ route('articles.show', $article) }}"><button>{{ $article->title }}</button></a></td>
+                <td>
+                    <a href="{{ route('articles.show', $article) }}">{{ $article->title }}</a>
+                </td>
                 <td>{{ $article->created_at->format('Y-m-d h:i') }}</td>
                 <td>{{ $article->updated_at->format('Y-m-d h:i') }}</td>
                 <td>
