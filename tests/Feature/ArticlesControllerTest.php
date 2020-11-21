@@ -15,6 +15,13 @@ class ArticlesControllerTest extends TestCase
     {
         $article = Article::factory()->create([]);
 
+        $response = $this->get(route('articles.index'));
+
+        $response
+            ->assertStatus(200)
+            // Looks for a string in response
+            ->assertSee($article->title);
+
         $this->assertDatabaseHas(
             'articles',
             [
@@ -22,8 +29,6 @@ class ArticlesControllerTest extends TestCase
                 'content' => $article->content
             ]
         );
-
-        $this->followingRedirects();
     }
 
     public function testShowSingleArticle(): void
