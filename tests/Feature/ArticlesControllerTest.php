@@ -117,7 +117,7 @@ class ArticlesControllerTest extends TestCase
             ->assertSee($article->content);
     }
 
-    public function testDeleteArticle(): void
+    public function testSoftDeleteArticle(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -212,7 +212,7 @@ class ArticlesControllerTest extends TestCase
         );
     }
 
-    public function testWhenUnauthorizedTriesCreateArticle()
+    public function testCantCreateArticleWithNoAuth()
     {
         $response = $this->post(
             route('articles.store'),
