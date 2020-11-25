@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ArticlesController extends Controller
@@ -16,11 +17,15 @@ class ArticlesController extends Controller
 
     public function create()
     {
-        return view('articles.create');
+        $this->authorize('create', Article::class);
+
+        return view('articles.create', Article::class);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Article $article)
     {
+        $this->authorize('create', Article::class);
+
         $article = (new Article)->fill($request->all());
         $article->user()->associate(auth()->user());
         $article->save();
@@ -37,6 +42,8 @@ class ArticlesController extends Controller
 
     public function edit(Article $article)
     {
+        $this->authorize('edit', $article);
+
         return view('articles.edit', [
             'article' => $article
         ]);
@@ -44,6 +51,8 @@ class ArticlesController extends Controller
 
     public function update(Request $request, Article $article)
     {
+        $this->authorize('update', $article);
+
         $article->update($request->all());
 
         return redirect()->route('articles.edit', $article);
@@ -51,6 +60,8 @@ class ArticlesController extends Controller
 
     public function destroy(Article $article)
     {
+        $this->authorize('delete', $article);
+
         $article->delete();
 
         return redirect()->route('articles.index');

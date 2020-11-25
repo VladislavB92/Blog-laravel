@@ -225,4 +225,49 @@ class ArticlesControllerTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect('login');
     }
+
+    public function testAnotherUserCannotDeleteArticle()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $article = Article::factory()->create();
+
+        $response = $this->delete(route('articles.destroy', $article));
+
+        $response->assertStatus(403);
+    }
+
+    public function testAnotherUserCannotEditArticle()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $article = Article::factory()->create();
+        $this->followingRedirects();
+
+        $response = $this->get(route('articles.edit', $article));
+
+        $response->assertStatus(403);
+    }
+
+    public function testUserCannotCreateMoreThan3Articles()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        Article::factory()->count(3)->create([
+            'user_id' => $user->id
+        ]);
+
+        $response = $this->post(
+            route('articles.store'),
+            [
+                'title' => 'Example title',
+                'content' => 'Example content'
+            ]
+        );
+
+        $response->assertStatus(403);
+    }
 }
