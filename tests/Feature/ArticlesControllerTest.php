@@ -143,14 +143,11 @@ class ArticlesControllerTest extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertDatabaseMissing(
-            'articles',
-            [
-                'user_id' => $user->id,
-                'title' => $article->title,
-                'content' => $article->content
-            ]
-        );
+        $this->assertSoftDeleted('articles', [
+            'user_id' => $user->id,
+            'title' => $article->title,
+            'content' => $article->content
+        ]);
     }
 
     public function testEditArticle(): void
