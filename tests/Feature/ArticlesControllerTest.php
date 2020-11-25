@@ -192,7 +192,7 @@ class ArticlesControllerTest extends TestCase
 
         $this->followingRedirects();
 
-        $response = $this->patch(route(
+        $response = $this->put(route(
             'articles.update',
             [
                 'article' => $article,
@@ -213,5 +213,19 @@ class ArticlesControllerTest extends TestCase
                 'content' => 'Modified content'
             ]
         );
+    }
+
+    public function testWhenUnauthorizedTriesCreateArticle()
+    {
+        $response = $this->post(
+            route('articles.store'),
+            [
+                'title' => 'Example title',
+                'content' => 'Example content'
+            ]
+        );
+
+        $response->assertStatus(302);
+        $response->assertRedirect('login');
     }
 }
