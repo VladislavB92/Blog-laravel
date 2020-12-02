@@ -91,6 +91,14 @@ class ArticlesControllerTest extends TestCase
                 'content' => 'Example content'
             ]
         );
+
+        $this->assertDatabaseHas('users',
+        [
+            'id' => $user->id,
+            'articles_count' => 1
+        ]);
+
+        $this->assertEquals(1, $user->articles_count);
     }
 
     public function testCreateNewArticleAccessPage(): void
@@ -204,7 +212,6 @@ class ArticlesControllerTest extends TestCase
         $this->assertDatabaseHas(
             'articles',
             [
-                'id' => $article->id,
                 'user_id' => $user->id,
                 'title' => 'Modified title',
                 'content' => 'Modified content'
@@ -251,12 +258,12 @@ class ArticlesControllerTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function testUserCannotCreateMoreThan3Articles()
+    public function testUserCannotCreateMoreThan200Articles()
     {
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        Article::factory()->count(3)->create([
+        Article::factory()->count(200)->create([
             'user_id' => $user->id
         ]);
 

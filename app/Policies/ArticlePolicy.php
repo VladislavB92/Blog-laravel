@@ -19,7 +19,7 @@ class ArticlePolicy
 
     public function create(User $user): bool
     {
-        return $user->articles->count() < 3;
+        return $user->articles->count() < 200;
     }
 
     public function edit(User $user, Article $article): bool

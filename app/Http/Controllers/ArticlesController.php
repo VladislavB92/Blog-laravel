@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ArticleWasCreated;
 use App\Models\Article;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class ArticlesController extends Controller
     {
         $this->authorize('create', Article::class);
 
-        return view('articles.create', Article::class);
+        return view('articles.create', [Article::class]);
     }
 
     public function store(Request $request, Article $article)
@@ -29,6 +30,8 @@ class ArticlesController extends Controller
         $article = (new Article)->fill($request->all());
         $article->user()->associate(auth()->user());
         $article->save();
+
+        event(new ArticleWasCreated($article));
 
         return redirect()->route('articles.index');
     }
