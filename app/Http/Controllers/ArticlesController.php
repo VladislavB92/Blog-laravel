@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Events\ArticleWasCreated;
 use App\Models\Article;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class ArticlesController extends Controller
