@@ -30,7 +30,7 @@ class SendEmailWithPasswordJob implements ShouldQueue
     public function handle()
     {
         $email = new PasswordGenerated($this->password);
-        
-        Mail::to('test@test.com')->send( $email);
+
+        Mail::to('test@test.com')->send($email);
     }
 }

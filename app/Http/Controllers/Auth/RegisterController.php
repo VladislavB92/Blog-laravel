@@ -67,7 +67,7 @@ class RegisterController extends Controller
         $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
         $password = substr($random, 0, 10);
 
-         dispatch(new SendEmailWithPasswordJob($password));
+        dispatch(new SendEmailWithPasswordJob($password));
 
         return User::create([
             'name' => $data['name'],
